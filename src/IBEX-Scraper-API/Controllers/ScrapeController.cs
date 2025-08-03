@@ -57,7 +57,7 @@ namespace IBEX_Scraper_API.Controllers
                 });
             }
         }
-        [HttpGet("get-all-prices")]
+        [HttpGet("prices-per-date")]
         public async Task<IActionResult> GetDataFromTheDatabase([FromQuery] DateTime date)
         {
             try
@@ -91,7 +91,7 @@ namespace IBEX_Scraper_API.Controllers
             }
         }
 
-        [HttpGet("prices-per-date")]
+        [HttpGet("get-all-prices")]
         public async Task<IActionResult> GetAllPrices()
         {
             try
