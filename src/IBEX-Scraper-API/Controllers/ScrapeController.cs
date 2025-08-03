@@ -57,7 +57,7 @@ namespace IBEX_Scraper_API.Controllers
                 });
             }
         }
-        [HttpGet("prices-per-date")]
+        [HttpGet("get-all-prices")]
         public async Task<IActionResult> GetDataFromTheDatabase([FromQuery] DateTime date)
         {
             try
@@ -91,6 +91,37 @@ namespace IBEX_Scraper_API.Controllers
             }
         }
 
+        [HttpGet("prices-per-date")]
+        public async Task<IActionResult> GetAllPrices()
+        {
+            try
+            {
+                var marketPrices = await _context.MarketPrices
+                    .OrderBy(p => p.Hour)
+                    .ToListAsync();
 
+                if (marketPrices == null || !marketPrices.Any())
+                {
+                    return NotFound(new { Message = "There is no data in the database." });
+                }
+
+                var result = marketPrices.Select(p => new
+                {
+                    p.Date,
+                    p.Hour,
+                    p.PricePerMWh
+                });
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Error = ex.Message,
+                    Stack = ex.StackTrace
+                });
+            }
+        }
     }
 }
