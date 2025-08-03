@@ -1,4 +1,4 @@
-﻿using IBEX_Scraper_API.Models;
+﻿using IBEX_Scraper_API.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBEX_Scraper_API.Data

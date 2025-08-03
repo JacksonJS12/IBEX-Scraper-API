@@ -1,4 +1,4 @@
-﻿using IBEX_Scraper_API.Models;
+﻿using IBEX_Scraper_API.Data.Models;
 
 namespace IBEX_Scraper_API.Services.IbexScraper
 {
