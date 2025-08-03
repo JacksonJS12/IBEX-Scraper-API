@@ -79,7 +79,7 @@ namespace IBEX_Scraper_API.Controllers
                     p.PricePerMWh
                 });
 
-                return Ok(result);
+                return Ok(result.OrderBy(x => x.Hour));
             }
             catch (Exception ex)
             {
@@ -111,8 +111,8 @@ namespace IBEX_Scraper_API.Controllers
                     p.Hour,
                     p.PricePerMWh
                 });
-
-                return Ok(result);
+                
+                return Ok(result.OrderBy(p => p.Date).ThenBy(p => p.Hour));
             }
             catch (Exception ex)
             {
