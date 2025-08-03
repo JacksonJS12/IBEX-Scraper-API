@@ -1,6 +1,8 @@
 ﻿using IBEX_Scraper_API.Data;
+using IBEX_Scraper_API.Data.Models;
 using IBEX_Scraper_API.Services.IbexScraper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace IBEX_Scraper_API.Controllers
 {
@@ -55,6 +57,40 @@ namespace IBEX_Scraper_API.Controllers
                 });
             }
         }
+        [HttpGet("prices-per-date")]
+        public async Task<IActionResult> GetDataFromTheDatabase([FromQuery] DateTime date)
+        {
+            try
+            {
+                var marketPrices = await _context.MarketPrices
+                    .Where(p => p.Date == date.Date.ToString("dd/MM/yyyy"))
+                    .OrderBy(p => p.Hour)
+                    .ToListAsync();
+
+                if (marketPrices == null || !marketPrices.Any())
+                {
+                    return NotFound(new { Message = "There is no data in the database for the specified date." });
+                }
+
+                var result = marketPrices.Select(p => new
+                {
+                    p.Date,
+                    p.Hour,
+                    p.PricePerMWh
+                });
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Error = ex.Message,
+                    Stack = ex.StackTrace
+                });
+            }
+        }
+
 
     }
 }
