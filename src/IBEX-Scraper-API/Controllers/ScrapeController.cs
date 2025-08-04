@@ -3,6 +3,7 @@ using IBEX_Scraper_API.Data.Models;
 using IBEX_Scraper_API.Services.IbexScraper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IBEX_Scraper_API.Controllers
 {
@@ -25,7 +26,13 @@ namespace IBEX_Scraper_API.Controllers
         {
             try
             {
-                var today = DateTime.UtcNow.Date;
+                // Get current time in EEST
+                TimeZoneInfo eestZone = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time");
+                DateTime eestTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, eestZone);
+
+                // Prices come at 14:00 EEST, so if the current time is before that, we will not scrape today’s data. 
+                // If it is after 14:00 EEST, we will scrape data for the next day.
+                var today = eestTime.Hour < 14 ? eestTime.Date : eestTime.AddDays(1).Date;
 
                 bool alreadyExists = _context.MarketPrices.Any(p => p.Date == today.ToString("dd/MM/yyyy"));
                 if (alreadyExists)
