@@ -26,6 +26,8 @@ It powers apps like [SunNext](https://github.com/JacksonJS12/SunNext) by allowin
 - Powered by an **Azure Logic App** that triggers daily at **14:00 BG time (UTC+3)**
 - Calls the `POST /api/Scrape/scrape-and-save` endpoint
 - Only stores new data (prevents duplicate entries for the same day)
+  
+  <center><img width="394" height="356" alt="image" src="https://github.com/user-attachments/assets/897ffe35-0acf-4eba-b825-cbbb05ec982d" /></center> 
 
 ## 🧱 Tech Stack
 
