@@ -2,7 +2,7 @@
 
 A secure ASP.NET Core Web API that automatically scrapes **day-ahead prices from the Free Electricity Market (Day Ahead segment) on IBEX** and stores them in a structured Azure SQL database for use by external applications.
 
-Access it at [link](https://ibex-scraper-api-e5bwewdyfacgetaf.swedencentral-01.azurewebsites.net/swagger/index.html)
+Access it at [link](http://ibex-scraper.somee.com/swagger/index.html)
 ## ⚡ Purpose
 
 This API was built to **decouple IBEX access from dependent systems** by providing a secure, reliable, and filterable data backend.
