@@ -32,13 +32,14 @@ It powers apps like [SunNext](https://github.com/JacksonJS12/SunNext) by allowin
 
 ## 🕒 Scheduling
 
-* Prices are updated daily after **14:00 BG time (UTC+3)** when IBEX publishes the next day’s market prices
+* Prices are updated daily after **14:00 BG time (UTC+3)** when IBEX publishes the next day’s market prices.
 * Data scraping is triggered by calling:
 
   ```
   POST /api/Scrape/scrape-and-save
   ```
 * Only stores **new** data (prevents duplicate entries for the same date/hour)
+* **Scheduler:** Configured using [cron-job.org](https://cron-job.org) to automatically call the above endpoint every day at **14:00 EEST**.
 
 ---
 
@@ -48,6 +49,7 @@ It powers apps like [SunNext](https://github.com/JacksonJS12/SunNext) by allowin
 * **Scraper:** AngleSharp
 * **Database:** MS SQL (Somee.com hosting)
 * **Deployment:** FTP to Somee.com (Free Hosting Plan, HTTP-only)
+* **Scheduler:** [cron-job.org](https://cron-job.org) external HTTP request trigger
 
 ---
 
