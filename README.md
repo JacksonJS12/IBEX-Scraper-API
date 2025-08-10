@@ -1,56 +1,82 @@
 # IBEX-Scraper-API
 
-A secure ASP.NET Core Web API that automatically scrapes **day-ahead prices from the Free Electricity Market (Day Ahead segment) on IBEX** and stores them in a structured Azure SQL database for use by external applications.
+A lightweight **ASP.NET Core Web API** that automatically scrapes **day-ahead electricity prices from IBEX (Independent Bulgarian Energy Exchange)** and stores them in a remote SQL Server database for use by external applications.
 
-Access it at [link](http://ibex-scraper.somee.com/swagger/index.html)
+**Live API:** [link](http://ibex-scraper.somee.com/swagger/index.html) *(HTTP only – free hosting plan limitation)*
+
+---
+
 ## ⚡ Purpose
 
 This API was built to **decouple IBEX access from dependent systems** by providing a secure, reliable, and filterable data backend.
 
 It powers apps like [SunNext](https://github.com/JacksonJS12/SunNext) by allowing them to:
-- Access daily price data without scraping IBEX directly
-- Query historical electricity prices by date/hour
-- Build custom dashboards and energy trading strategies
+
+* Access daily price data without scraping IBEX directly
+* Query historical electricity prices by date/hour
+* Build custom dashboards and energy trading strategies
+
+---
 
 ## 📊 What It Does
 
-- Scrapes **IBEX Day Ahead segment** prices for the next day
-- Extracts hourly energy prices (EUR/MWh)
-- Saves results into an Azure SQL `MarketPrices` table with:
-  - `Date` (e.g. `day/month/year`)
-  - `Hour` (1–24 using Central European Time – CET Time Zone)
-  - `PricePerMWh` (BGN/MWh)
+* Scrapes **IBEX Day Ahead** prices for the next day
+* Extracts hourly energy prices (BGN/MWh)
+* Saves results into a `MarketPrices` table with:
+
+  * `Date` (format: `dd/MM/yyyy`)
+  * `Hour` (1–24 using EET/EEST timezone)
+  * `PricePerMWh` (BGN/MWh)
+
+---
 
 ## 🕒 Scheduling
 
-- Powered by an **Azure Logic App** that triggers daily at **14:00 BG time (UTC+3)**
-- Calls the `POST /api/Scrape/scrape-and-save` endpoint
-- Only stores new data (prevents duplicate entries for the same day)
-  
-  <center><img width="394" height="356" alt="image" src="https://github.com/user-attachments/assets/897ffe35-0acf-4eba-b825-cbbb05ec982d" /></center> 
+* Prices are updated daily after **14:00 BG time (UTC+3)** when IBEX publishes the next day’s market prices
+* Data scraping is triggered by calling:
+
+  ```
+  POST /api/Scrape/scrape-and-save
+  ```
+* Only stores **new** data (prevents duplicate entries for the same date/hour)
+
+---
 
 ## 🧱 Tech Stack
 
-- **Backend:** ASP.NET Core Web API (.NET 8)
-- **Scraper:** AngleSharp
-- **Database:** Azure SQL
-- **Scheduler:** Azure Logic Apps
-- **Deployment:** Azure App Service
-- **CI/CD:** GitHub Actions
+* **Backend:** ASP.NET Core Web API (.NET 8)
+* **Scraper:** AngleSharp
+* **Database:** MS SQL (Somee.com hosting)
+* **Deployment:** FTP to Somee.com (Free Hosting Plan, HTTP-only)
 
-📁 Project Structure
-IBEX-Scraper-API/ <br/>
-├── Controllers/ <br/>
-│     └── ScrapeController.cs <br/>
-├── Services/ <br/>
-│     └── IbexScraper/ <br/>
-│         └── IbexScraperService.cs <br/>
-│         └── IIbexScraperService.cs <br/>
-├── Data/ <br/>
-│     └── Migrations/ <br/>
-│     └── Models/ <br/>
-│         └── MarketPrice.cs <br/>
-│     └── AppDbContext.cs <br/>
-│     └── AppDbContextFactory.cs <br/>
-└── Program.cs <br/>
+---
+
+## 🌐 Deployment Notes (Somee Free Plan)
+
+* Hosted on **Somee.com** free plan
+* **HTTP only** – no HTTPS due to free hosting limitations
+* API runs at: [http://ibex-scraper.somee.com](http://ibex-scraper.somee.com)
+* Connection string stored in `appsettings.Production.json` on the server
+* Deployment via FTP to `/www.ibex-scraper.somee.com`
+
+---
+
+## 📁 Project Structure
+
+```
+IBEX-Scraper-API/
+├── Controllers/
+│   └── ScrapeController.cs
+├── Services/
+│   └── IbexScraper/
+│       ├── IbexScraperService.cs
+│       └── IIbexScraperService.cs
+├── Data/
+│   ├── Migrations/
+│   ├── Models/
+│   │   └── MarketPrice.cs
+│   ├── AppDbContext.cs
+│   └── AppDbContextFactory.cs
+└── Program.cs
+```
 
