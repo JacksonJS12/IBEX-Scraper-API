@@ -2,7 +2,7 @@
 
 A lightweight **ASP.NET Core Web API** that automatically scrapes **day-ahead electricity prices from IBEX (Independent Bulgarian Energy Exchange)** and stores them in a remote SQL Server database for use by external applications.
 
-**Live API:** [link](http://ibex-scraper.somee.com/swagger/index.html) *(HTTP only – free hosting plan limitation)*
+**Live API:** [link](http://ibex-scraper.somee.com/swagger/index.html)  *(HTTP only – free hosting plan limitation)*
 
 ---
 
